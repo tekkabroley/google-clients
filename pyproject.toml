@@ -1,0 +1,19 @@
+[project]
+name = "google-drive-client"
+version = "0.1.0"
+description = "interface for google drive api"
+authors = [
+    {name = "Alex Broley",email = "alex.broley@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-auth-httplib2 (>=0.3.0,<0.4.0)",
+    "google-api-python-client (>=2.187.0,<3.0.0)",
+    "google-auth-oauthlib (>=1.2.3,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
