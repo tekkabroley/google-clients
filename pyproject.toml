@@ -1,7 +1,7 @@
 [project]
-name = "google-drive-client"
+name = "google-clients"
 version = "0.1.0"
-description = "interface for google drive api"
+description = "google api interfaces for products: sheets, drive, ..."
 authors = [
     {name = "Alex Broley",email = "alex.broley@gmail.com"}
 ]
@@ -11,7 +11,10 @@ dependencies = [
     "google-auth-httplib2 (>=0.3.0,<0.4.0)",
     "google-api-python-client (>=2.187.0,<3.0.0)",
     "google-auth-oauthlib (>=1.2.3,<2.0.0)",
-    "requests (>=2.32.5,<3.0.0)"
+    "requests (>=2.32.5,<3.0.0)",
+    "typer (>=0.20.1,<0.21.0)",
+    "pydantic (>=2.12.5,<3.0.0)",
+    "pydantic-settings (>=2.12.0,<3.0.0)"
 ]
 
 
