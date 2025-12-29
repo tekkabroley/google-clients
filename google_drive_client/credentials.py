@@ -49,17 +49,23 @@ def credentials():
 
     credentials_json = json.loads(credentials_string)
 
-    if credentials_json["type"] == "service_account":
+    if credentials_json.get("type") == "service_account":
         credentials = service_account.Credentials.from_service_account_info(
             credentials_json, scopes=SCOPES
         )
+
+    elif "installed" in credentials_json:
+        raise InvalidCredentialsError(
+            "OAuth client credentials detected. You need to run the 'authorize' command first "
+            "to get user credentials, then save those credentials to your .env file."
+        )
+
     else:
         credentials = Credentials.from_authorized_user_info(credentials_json, SCOPES)
 
     if not credentials.valid:
         try:
             credentials.refresh(Request())
-            # print("Refreshed access token")
         except Exception:
             raise InvalidCredentialsError("Failed to refresh Google API credentials")
 
