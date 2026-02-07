@@ -4,7 +4,7 @@ from pathlib import Path
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 from google.oauth2.credentials import Credentials
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class InvalidCredentialsError(Exception):
@@ -28,11 +28,12 @@ class Settings(BaseSettings):
     Config property google_client_credentials must be either a path prefixed by file://
     or a credentials object in JSON format
     """
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra='ignore'
+    )
 
     google_client_credentials: str
-
-    class Config:
-        env_file = ".env"
 
 
 settings = Settings()

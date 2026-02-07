@@ -26,3 +26,6 @@ Thumbs.db
 credentials/
 token.pickle
 credentials.json
+
+# downloads
+downloads/
