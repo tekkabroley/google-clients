@@ -99,3 +99,23 @@ def list_files(
         for file in files:
             print(f"  - {file['name']} (ID: {file['id']})")
             print(f"    Created: {file.get('createdTime')}")
+
+
+@app.command(help="Downloads a file from Google Drive")
+def download(
+    file_id: str = typer.Argument(..., help="File ID to download"),
+    destination: str = typer.Argument(..., help="Local path to save the file"),
+    export_mime_type: str = typer.Option(None, help="MIME type for exporting Google Workspace files (e.g., 'application/pdf')"),
+):
+    print(f"Downloading file: {file_id}")
+    print(f"Destination: {destination}")
+    
+    drive = DriveClient(credentials())
+    
+    try:
+        result_path = drive.download(file_id, destination, export_mime_type)
+        print(f"✓ Successfully downloaded file!")
+        print(f"✓ Saved to: {result_path}")
+    except Exception as e:
+        print(f"✗ Error downloading file: {e}")
+        sys.exit(1)
