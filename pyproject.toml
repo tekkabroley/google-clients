@@ -1,9 +1,9 @@
 [project]
 name = "google-clients"
 version = "0.1.0"
-description = "google api interfaces for products: sheets, drive, ..."
+description = "Google API interfaces for products: Drive, Sheets, Photos Sync"
 authors = [
-    {name = "Alex Broley",email = "alex.broley@gmail.com"}
+    {name = "Alex Broley", email = "alex.broley@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.11"
@@ -17,6 +17,17 @@ dependencies = [
     "pydantic-settings (>=2.12.0,<3.0.0)"
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest (>=8.0.0)",
+    "pytest-cov (>=4.1.0)",
+    "coverage (>=7.4.0)"
+]
+test = [
+    "pytest (>=8.0.0)",
+    "pytest-cov (>=4.1.0)"
+]
+
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -25,9 +36,45 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "google-clients"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <your.email@example.com>"]
-packages = [{include = "google_drive_client"}]  # Add this line
+description = "Google API interfaces for products: sheets, drive, photos sync"
+authors = ["Alex Broley <alex.broley@gmail.com>"]
+packages = [
+    {include = "google_drive_client"},
+    {include = "tools/google_photos_sync"}
+]
 
 [tool.poetry.scripts]
 gdrive-cli = "google_drive_client.cli:app"
+gphotos-sync = "tools.google_photos_sync.cli:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["tools/google_photos_sync", "google_drive_client"]
+omit = ["*test*", "tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:"
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+[dependency-groups]
+dev = [
+    "pytest (>=9.1.1,<10.0.0)",
+    "pytest-cov (>=7.1.0,<8.0.0)",
+    "coverage (>=7.17.0,<8.0.0)"
+]

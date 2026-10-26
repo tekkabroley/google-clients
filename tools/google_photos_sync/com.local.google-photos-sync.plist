@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Label: Unique identifier for this launchd job -->
+    <key>Label</key>
+    <string>com.local.google-photos-sync</string>
+
+    <!-- Program: The command to run -->
+    <key>Program</key>
+    <string>/bin/zsh</string>
+
+    <!-- Arguments: Script to execute -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>-c</string>
+        <string>cd $HOME/github/google-clients && ./tools/google_photos_sync/start_watch.sh</string>
+    </array>
+
+    <!-- Working Directory -->
+    <key>WorkingDirectory</key>
+    <string>/Users/alexbroley/github/google-clients</string>
+
+    <!-- Run at load: Start when loaded -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- KeepAlive: Restart if the process dies -->
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Restart only if the exit was abnormal -->
+    <key>ProcessType</key>
+    <string>Interactive</string>
+
+    <!-- Standard Out -->
+    <key>StandardOutPath</key>
+    <string>/Users/alexbroley/Photos_Sync/Logs/launchd.stdout.log</string>
+
+    <!-- Standard Error -->
+    <key>StandardErrorPath</key>
+    <string>/Users/alexbroley/Photos_Sync/Logs/launchd.stderr.log</string>
+
+    <!-- Environment Variables -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin</string>
+        <key>HOME</key>
+        <string>/Users/alexbroley</string>
+        <key>CONFIG_FILE</key>
+        <string>/Users/alexbroley/Photos_Sync/config.env</string>
+    </dict>
+
+    <!-- Run as the current user -->
+    <key>UserName</key>
+    <string>alexbroley</string>
+
+    <!-- Launch only once -->
+    <key>LimitLoadToSessionType</key>
+    <array>
+        <string>Aqua</string>
+        <string>Background</string>
+    </array>
+</dict>
+</plist>
