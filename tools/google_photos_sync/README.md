@@ -18,6 +18,8 @@ cd /path/to/google-clients
 docker-compose -f tools/google_photos_sync/docker-compose.yml up -d
 ```
 
+**Windows Users:** For the easiest setup, simply double-click `tools/google_photos_sync/start_windows.bat` - it handles everything automatically!
+
 See the [Docker documentation](docker/README.md) for complete setup instructions.
 
 ---

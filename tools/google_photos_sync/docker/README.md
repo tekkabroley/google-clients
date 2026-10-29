@@ -2,6 +2,20 @@
 
 Run the Google Photos Sync tool on **Windows, macOS, or Linux** using Docker containers. This eliminates the need for platform-specific dependencies like Homebrew and fswatch.
 
+## Windows Users - Quick Start with Batch Files
+
+For the easiest setup on **Windows 11/10**, simply double-click:
+- `tools/google_photos_sync/start_windows.bat` - Complete setup (build + run + configure)
+- `tools/google_photos_sync/docker/run_windows.bat` - Quick start (after initial setup)
+
+These batch files automatically:
+- Check Docker Desktop is installed and running
+- Verify WSL 2 is available
+- Build the Docker image
+- Start the container
+- Guide you through rclone configuration
+- Create all necessary directories
+
 ## Quick Start
 
 ### 1. Build the Docker Image
