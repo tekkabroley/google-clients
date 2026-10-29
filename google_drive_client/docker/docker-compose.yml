@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  google-drive-client:
+    build:
+      context: ../..
+      dockerfile: google_drive_client/docker/Dockerfile
+    container_name: google-drive-client
+    restart: unless-stopped
+    volumes:
+      # Credentials directory - mount your Google credentials here
+      - ./credentials:/app/credentials
+      
+      # Config directory - for .env file
+      - ./config:/app/config
+      
+      # Data directory - for downloads and temporary files
+      - ./data:/app/data
+    ports:
+      # Port for OAuth callback (used by authorize command)
+      - "50200:50200"
+    environment:
+      # Optional: Set your credentials path
+      # - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account.json
+      # - GOOGLE_CLIENT_CREDENTIALS=file:///app/credentials/credentials.json
+      
+      # Optional: Set debug mode
+      # - DEBUG=true
+    networks:
+      - google-drive-client-network
+
+networks:
+  google-drive-client-network:
+    driver: bridge
