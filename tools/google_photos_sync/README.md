@@ -286,7 +286,22 @@ start_windows.bat
 
 ### 🍎 macOS Instructions (Docker)
 
-#### Option A: Using docker-compose (Recommended)
+#### Quick Start (Recommended)
+
+Simply run the shell script:
+```bash
+cd /path/to/google-clients/tools/google_photos_sync
+./start_macos.sh
+```
+
+This automatically:
+- Checks Docker is installed and running
+- Builds the Docker image
+- Starts the container
+- Guides you through rclone configuration
+- Opens the config file for editing
+
+#### Option A: Using docker-compose
 
 ```bash
 # Navigate to project directory
