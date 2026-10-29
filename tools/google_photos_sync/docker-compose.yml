@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  google-photos-sync:
+    build:
+      context: .
+      dockerfile: tools/google_photos_sync/docker/Dockerfile
+    container_name: google-photos-sync
+    restart: unless-stopped
+    volumes:
+      # Main data directory - maps to host for persistence
+      - ./Photos_Sync:/app/data
+      
+      # Optional: Mount your existing rclone config
+      # Uncomment and update the path if you have an existing rclone config
+      # - ~/.config/rclone/rclone.conf:/app/data/config/rclone.conf
+      
+      # Optional: Mount host directory for watching
+      # This allows you to drop files into a host directory that gets synced
+      # - /path/to/your/photos:/app/data/Watch
+    environment:
+      # Container-specific paths
+      - WATCH_DIR=/app/data/Watch
+      - UPLOADED_DIR=/app/data/Uploaded
+      - LOG_DIR=/app/data/Logs
+      - CONFIG_FILE=/app/data/config/config.env
+      - RCLONE_CONFIG=/app/data/config/rclone.conf
+      
+      # Optional: Set debug mode
+      # - DEBUG=true
+      
+      # Optional: Override default remote and album
+      # - RCLONE_REMOTE=my_google_photos
+      # - RCLONE_ALBUM=MyAlbum
+    networks:
+      - google-photos-sync-network
+    
+    # For interactive setup
+    # Uncomment to run in foreground for initial setup
+    # command: ["bash"]
+    
+    # To start the monitor automatically
+    # Uncomment this and comment out the command above
+    # command: ["start"]
+
+networks:
+  google-photos-sync-network:
+    driver: bridge

@@ -1,8 +1,28 @@
 # Google Photos Sync Tool
 
-A lightweight, background-capable automation system that watches a local directory on macOS, waits for incoming image files to completely finish writing, and uploads them to Google Photos using `rclone`.
+A lightweight, background-capable automation system that watches a local directory, waits for incoming image files to completely finish writing, and uploads them to Google Photos using `rclone`.
 
-## Prerequisites
+## Platforms Supported
+
+- **macOS**: Native installation with Homebrew (original implementation)
+- **Windows**: via Docker container
+- **Linux**: via Docker container
+
+## Quick Start (Docker - Recommended for Windows/Linux)
+
+For cross-platform support, use the Docker container:
+
+```bash
+# Build and run with docker-compose
+cd /path/to/google-clients
+docker-compose -f tools/google_photos_sync/docker-compose.yml up -d
+```
+
+See the [Docker documentation](docker/README.md) for complete setup instructions.
+
+---
+
+## Quick Start (macOS Native)
 
 ### System Dependencies (macOS)
 
@@ -199,8 +219,23 @@ rm -rf ~/Photos_Sync/
 
 ## Files in This Package
 
-- `setup.sh` - Dependency installation and initial setup
-- `start_watch.sh` - Main monitor script with fswatch
-- `upload_worker.sh` - File processing with debouncing and upload
-- `com.local.google-photos-sync.plist` - launchd configuration
+- `setup.sh` - Dependency installation and initial setup (macOS)
+- `start_watch.sh` - Main monitor script with fswatch (macOS)
+- `upload_worker.sh` - File processing with debouncing and upload (macOS)
+- `com.local.google-photos-sync.plist` - launchd configuration (macOS)
+- `docker/` - Docker container configuration for cross-platform support
+  - `Dockerfile` - Container image definition
+  - `docker-compose.yml` - Docker Compose configuration
+  - `README.md` - Docker-specific documentation
 - `README.md` - This file
+
+## Docker Support
+
+For **Windows and Linux** users, or anyone who prefers containerized deployments, Docker support is provided:
+
+- Full containerization with all dependencies (rclone, inotify-tools, Python)
+- Cross-platform file monitoring using inotifywait
+- Easy deployment with docker-compose
+- Complete isolation from host system
+
+See [docker/README.md](docker/README.md) for complete Docker setup instructions.
