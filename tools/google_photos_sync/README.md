@@ -233,11 +233,181 @@ rm -rf ~/Photos_Sync/
 
 ## Docker Support
 
-For **Windows and Linux** users, or anyone who prefers containerized deployments, Docker support is provided:
+For **Windows, macOS, and Linux** users, or anyone who prefers containerized deployments, Docker support is provided:
 
 - Full containerization with all dependencies (rclone, inotify-tools, Python)
 - Cross-platform file monitoring using inotifywait
 - Easy deployment with docker-compose
 - Complete isolation from host system
+
+---
+
+### 🪟 Windows 11/10 Instructions
+
+#### Quick Start (Recommended)
+
+Simply **double-click** the batch file:
+```
+tools\google_photos_sync\start_windows.bat
+```
+
+This automatically:
+- Checks Docker Desktop is installed and running
+- Verifies WSL 2 is available
+- Builds the Docker image
+- Starts the container
+- Guides you through rclone configuration
+- Creates all necessary directories
+- Opens the config file for editing
+
+#### Manual Setup
+
+If you prefer command line:
+
+```cmd
+cd C:\path\to\google-clients\tools\google_photos_sync
+start_windows.bat
+```
+
+#### After Setup
+
+1. **Add photos**: Copy files to `tools\google_photos_sync\Photos_Sync\Watch\`
+2. **View logs**: `docker logs -f google-photos-sync`
+3. **Stop service**: `docker stop google-photos-sync`
+4. **Restart**: Use `docker\run_windows.bat` or `docker start google-photos-sync`
+
+#### Prerequisites for Windows
+
+- [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/) installed
+- WSL 2 enabled (Docker Desktop will guide you through this)
+- Docker Desktop running (whale icon in system tray)
+
+---
+
+### 🍎 macOS Instructions (Docker)
+
+#### Option A: Using docker-compose (Recommended)
+
+```bash
+# Navigate to project directory
+cd /path/to/google-clients
+
+# Build and start the container
+docker-compose -f tools/google_photos_sync/docker-compose.yml up -d
+
+# View logs
+docker-compose -f tools/google_photos_sync/docker-compose.yml logs -f
+```
+
+#### Option B: Using Docker Run
+
+```bash
+# Build the image
+docker build -t google-photos-sync -f tools/google_photos_sync/docker/Dockerfile .
+
+# Run the container
+docker run -d \
+  --name google-photos-sync \
+  -v $(pwd)/Photos_Sync:/app/data \
+  google-photos-sync start
+
+# View logs
+docker logs -f google-photos-sync
+```
+
+#### Configure rclone
+
+After starting the container:
+
+```bash
+# Run interactive configuration
+docker exec -it google-photos-sync rclone config --config=/app/data/config/rclone.conf
+```
+
+Follow the prompts to authenticate with Google Photos.
+
+#### Edit Configuration
+
+```bash
+# Edit the config file on your Mac
+nano Photos_Sync/config/config.env
+
+# Or open in TextEdit
+open Photos_Sync/config/config.env
+```
+
+Set these values:
+```ini
+RCLONE_REMOTE="google_photos"
+RCLONE_ALBUM="AutoSync"
+```
+
+#### Add Photos to Sync
+
+Copy files to:
+```bash
+cp /path/to/your/photo.jpg Photos_Sync/Watch/
+```
+
+Files will automatically:
+1. Be detected by the container
+2. Wait for complete write (debouncing)
+3. Upload to Google Photos
+4. Move to `Photos_Sync/Uploaded/` on success
+
+#### Useful Commands
+
+```bash
+# Stop container
+docker stop google-photos-sync
+
+# Start container
+docker start google-photos-sync
+
+# Restart container
+docker restart google-photos-sync
+
+# Check status
+docker exec google-photos-sync google-photos-sync status
+
+# Open shell in container
+docker exec -it google-photos-sync bash
+
+# Upload single file
+docker exec google-photos-sync google-photos-sync upload /path/in/container/file.jpg
+
+# View container IP
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' google-photos-sync
+```
+
+#### Prerequisites for macOS
+
+- Docker Desktop for Mac installed and running
+- No additional dependencies needed (everything runs in the container)
+
+---
+
+### 🐧 Linux Instructions (Docker)
+
+Same as macOS Docker instructions above. Use the same docker-compose or docker run commands.
+
+---
+
+### ❓ Choosing: Native vs Docker on macOS
+
+| Feature | Native (macOS) | Docker (macOS) |
+|---------|---------------|----------------|
+| Performance | ⭐⭐⭐⭐⭐ Native speed | ⭐⭐⭐⭐ Slight overhead |
+| Dependencies | Requires Homebrew, rclone, fswatch | All included in container |
+| Setup Complexity | Medium (multiple steps) | Easy (single command) |
+| File Monitoring | fswatch (native macOS) | inotifywait (Linux in container) |
+| System Integration | Direct access to files | Volume mounted |
+| Recommended For | Developers, power users | Beginners, cross-platform users |
+
+For most macOS users, the **native installation** is recommended for best performance. Use Docker if you:
+- Want complete isolation
+- Need to match production environments
+- Prefer containerized deployments
+- Want to test on multiple platforms
 
 See [docker/README.md](docker/README.md) for complete Docker setup instructions.
